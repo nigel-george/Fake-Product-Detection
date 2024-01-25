@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Akatsuki Corp</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'imagechecker/css/homestyle.css' %}">
+
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+
+	<!--Navigation bar-->
+	<header>
+		<a href="#" class="logo"><img src="{% static 'imagechecker/images/logo1.png' %}"></a>
+		<div class ="bx bx-menu" id="menu-icon"></div>
+
+		<ul class="navbar">
+			<li><a href="#home">Home</a></li>
+			<li><a href="#detect">Detective</a></li>
+			<li><a href="#about_us">About</a></li>
+			<li><a href="#contact_us">Contact</a></li>
+		</ul>
+	</header>
+
+	<!--home-->
+	<section class="home" id="home">
+		<div class="home-text">
+			<span>Welcome to</span>
+			<h1>Detective</h1>
+			<h2>Let's find out <br> Real and Fake</h2>
+			<a href="#detect" class="btn" >Detect</a>
+		</div>
+		<div class="home-img">
+			<img src="{% static 'imagechecker/images/home2.png' %}" alt="">
+		</div>
+	</section>
+
+    <!--Image Detection-->
+	<section class="detect" id="detect">
+		<div class="heading">
+			<span>Investigate Now</span>
+			<h1>Let's Prove it!</h1>
+		</div>
+        <form method="post" id="myForm" enctype="multipart/form-data" action="/imagechecker/upload/">
+	  
+            {% csrf_token %}
+      <div class="container">
+        
+  <div class="box">
+    <div class="img-area">
+        
+      <input type="file" name="image" id="uploadInput" style="display: none;">
+      <label for="uploadInput" class="upload-button">
+	 
+        <i class='bx bx-upload icon'></i>
+        <h3>Upload Image</h3>
+        <p>Image must be less than <span>2MB</span></p>
+      </label>
+      <img id="uploadedImage"  src="" alt="Uploaded Image" style="display: none;">
+    </div>
+    <button class="submitButton" type="button" id="submitButton"> Scan It </button><br>
+    <button type="button" id="closeButton" class="closebutton" style="display: none;">Change Image</button>
+  </div>
+
+  <script src="{% static 'imagechecker/js/script.js' %}"></script>
+</div></form>
+        <div class="container2">
+        <h3>Image Upload Result<h3>
+    
+        <p id="respresult">Let Us Investigate.</p>
+        
+       </div>
+       
+	</section>
+
+	About us
+		<section class="about_us" id="about_us">
+			<div class="about-head">
+            <span>Detectives</span>
+            <h1>Tony Regi Jacob</h1>
+            <h1>Nigel George</h1>
+            <h1>Abhiram Sathyan</h1>
+            <h1>Meenakshi Remadevi</h1>
+            <h1>Muhammad Hasan</h1>
+            <h1>Muhammad Anas</h1>
+            <h1>Keerthi Reddy Dokuri</h1>
+            <h1>Ahmad Iqbal</h1>
+            <h1>Arshpreet Kaur</h1>
+            <h1>Basant Singh</h1>
+            </div>
+	</section> 
+    <section class="contact_us" id="Contact_us">
+        <section class="contact_us" id="contact_us">
+			<div class="about-head">
+            <span>Contact Us</span>
+            <h1>The AKATSUKI Corp</h1>
+            <P>The Hidden Leaf Village, Land of Fire.</P>
+    </section>
+    <script>
+        $(document).ready(function() {
+            $('#submitButton').click(function() {
+                var formData = new FormData($('#myForm')[0]);
+        
+                $.ajax({
+                    type: 'POST',
+                    url: $('#myForm').attr('action'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                      
+                       if(response.prediction == undefined ){
+                        $('#respresult').text("Please Select an Image before Scanning");
+                            document.getElementById("respresult").style.color = "#0C0D0D";
+                            alert("Please Select an Image before Scanning");
+                       }else{
+                            $('#respresult').text("The Image is "+response.prediction);
+                            document.getElementById("respresult").style.color = "#0C0D0D";}
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(error); // Log the error for debugging
+                    }
+                });
+            });
+        });
+        </script>
+              
+</body>
+</htm1>
